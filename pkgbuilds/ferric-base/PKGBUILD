@@ -1,0 +1,30 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# PHASE 5 SKELETON — metapackage that defines "a FerricOS system".
+# Installed machines get stack changes when you edit depends=() and bump pkgver.
+
+pkgname=ferric-base
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS base metapackage — depends on the full FerricOS stack"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+depends=(
+  # 'ferric-artwork'
+  # 'hyprland' 'waybar' 'kitty'
+  # 'networkmanager'
+)
+
+package() {
+  # Metapackage: ships os-release so installed systems identify as FerricOS
+  install -Dm644 /dev/stdin "$pkgdir/usr/lib/os-release" << 'OSREL'
+NAME="FerricOS"
+PRETTY_NAME="FerricOS"
+ID=ferric
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;216;90;48"
+HOME_URL="https://github.com/notChewy1324/ferricos"
+LOGO=ferric
+OSREL
+}

@@ -1,0 +1,11 @@
+NAME="FerricOS"
+PRETTY_NAME="FerricOS"
+ID=ferric
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;216;90;48"
+HOME_URL="https://github.com/notChewy1324/ferricos"
+DOCUMENTATION_URL="https://github.com/notChewy1324/ferricos"
+SUPPORT_URL="https://github.com/notChewy1324/ferricos/issues"
+BUG_REPORT_URL="https://github.com/notChewy1324/ferricos/issues"
+LOGO=ferric

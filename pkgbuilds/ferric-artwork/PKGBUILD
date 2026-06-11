@@ -1,0 +1,20 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# PHASE 5 SKELETON — wallpapers/themes move here OUT of profile/airootfs (never both places).
+# Build: makepkg -f   |   Publish: ../../scripts/publish-packages.sh
+
+pkgname=ferric-artwork
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS wallpapers, icons, and visual identity"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+# Put wallpaper files next to this PKGBUILD, then list them:
+source=()        # e.g. source=('wallpaper-oxide.png')
+sha256sums=()    # regenerate with: updpkgsums
+
+package() {
+  install -d "$pkgdir/usr/share/backgrounds/ferric"
+  # install -Dm644 "$srcdir/wallpaper-oxide.png" \
+  #   "$pkgdir/usr/share/backgrounds/ferric/wallpaper-oxide.png"
+}
