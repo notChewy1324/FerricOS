@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Boot-test the newest ISO in UEFI mode (requires edk2-ovmf).
 set -euo pipefail
+set -vga virtio
 cd "$(dirname "$0")/.."
 ISO="$(ls -t out/*.iso | head -1)"
 OVMF="/usr/share/edk2/x64/OVMF_CODE.4m.fd"
 [[ -f "$OVMF" ]] || OVMF="/usr/share/edk2-ovmf/x64/OVMF_CODE.fd"
 echo "[ferric] UEFI boot: $ISO"
-qemu-system-x86_64 -m 4G -enable-kvm -cdrom "$ISO" \
+qemu-system-x86_64 -m 6G -enable-kvm -cdrom "$ISO" \
   -drive if=pflash,format=raw,readonly=on,file="$OVMF"
