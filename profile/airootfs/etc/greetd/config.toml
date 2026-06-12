@@ -1,0 +1,12 @@
+[terminal]
+vt = 1
+
+# autologin straight into Hyprland on the live ISO
+[initial_session]
+command = "Hyprland"
+user = "liveuser"
+
+# greeter shown on logout — text-based, very ferric
+[default_session]
+command = "tuigreet --time --remember --cmd Hyprland"
+user = "greeter"

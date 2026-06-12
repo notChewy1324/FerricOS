@@ -1,0 +1,11 @@
+[Unit]
+Description=Create FerricOS live user
+Before=greetd.service
+ConditionPathExists=!/home/liveuser
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/ferric-live-user
+
+[Install]
+WantedBy=multi-user.target

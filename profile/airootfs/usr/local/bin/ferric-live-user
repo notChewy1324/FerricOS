@@ -1,0 +1,6 @@
+#!/bin/sh
+# Create the FerricOS live user at boot. useradd -m copies /etc/skel natively.
+if ! id liveuser >/dev/null 2>&1; then
+    useradd -m -G wheel -s /usr/bin/zsh -c "FerricOS Live" liveuser
+    passwd -d liveuser >/dev/null
+fi

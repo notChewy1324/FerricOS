@@ -1,6 +1,6 @@
 # FerricOS
 
-> **ferric oxide never forgets.**
+> **FerricOS is designed & built by Cam Garrison.**
 > An Arch-based distribution with a cassette-futurism soul — magnetic tape, sodium light, and a terminal that glows.
 
 FerricOS is a rolling-release Arch Linux derivative built with [archiso](https://wiki.archlinux.org/title/Archiso). This repository is the entire distro: the ISO recipe, the package sources, and the build automation.

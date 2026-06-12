@@ -1,0 +1,38 @@
+// FerricOS // Quiet Ferric — waybar
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["network", "pulseaudio", "cpu", "memory", "battery", "tray"],
+
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "persistent-workspaces": { "*": 3 }
+  },
+  "clock": {
+    "format": "{:%H:%M  //  %a %d %b}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "network": {
+    "format-wifi": "NET ▮▮▮",
+    "format-ethernet": "NET ETH",
+    "format-disconnected": "NET ---",
+    "tooltip-format": "{ifname} · {ipaddr}",
+    "on-click": "kitty -e nmtui"
+  },
+  "pulseaudio": {
+    "format": "VOL {volume}",
+    "format-muted": "VOL MUT",
+    "on-click": "pamixer -t"
+  },
+  "cpu": { "format": "CPU {usage}", "interval": 3 },
+  "memory": { "format": "MEM {percentage}", "interval": 5 },
+  "battery": {
+    "format": "BAT {capacity}",
+    "format-charging": "BAT {capacity}+",
+    "states": { "warning": 25, "critical": 10 }
+  },
+  "tray": { "spacing": 8 }
+}
