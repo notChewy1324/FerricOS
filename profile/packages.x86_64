@@ -131,8 +131,8 @@ zsh
 fastfetch
 btop
 git
-github-clibrightnessctl
-brave-bin
+github-cli
+brightnessctl
 fuzzel
 greetd
 greetd-tuigreet
@@ -140,7 +140,6 @@ grim
 hyprland
 hyprpaper
 kitty
-librewolf
 mako
 networkmanager
 noto-fonts
