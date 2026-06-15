@@ -12,3 +12,5 @@ alias ls='ls --color=auto'
 alias ll='ls -lah'
 alias grep='grep --color=auto'
 alias ff='fastfetch'
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
