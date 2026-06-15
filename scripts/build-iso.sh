@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-WORK_DIR="${WORK_DIR:-/tmp/ferricos-work}"
+WORK_DIR="${WORK_DIR:-/home/ferricos-work}"
 OUT_DIR="${OUT_DIR:-$PWD/out}"
 
 echo "[ferric] updating keyring (stale keys are the #1 build failure)"
