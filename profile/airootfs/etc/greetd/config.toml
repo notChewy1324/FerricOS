@@ -4,7 +4,7 @@ vt = 1
 # autologin straight into Hyprland on the live ISO
 [initial_session]
 command = "Hyprland"
-user = "liveuser"
+user = "ferric"
 
 # greeter shown on logout — text-based, very ferric
 [default_session]
