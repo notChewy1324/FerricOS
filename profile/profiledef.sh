@@ -25,4 +25,7 @@ file_permissions=(
   ["/usr/local/bin/ferric-live-user"]="0:0:755"
   ["/etc/sudoers.d"]="0:0:750"
   ["/etc/sudoers.d/ferric-live"]="0:0:440"
+  ["/usr/local/bin/ferric-live-setup"]="0:0:755"
+  ["/etc/sudoers.d/ferric"]="0:0:440"
+  ["/etc/greetd/config.toml"]="0:0:644"
 )
