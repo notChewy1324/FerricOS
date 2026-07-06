@@ -15,6 +15,26 @@ if grep -q '^ferric-base$' profile/packages.x86_64 \
   exit 1
 fi
 
+# Ship the built ferric repo ON the ISO: the live session and the installers
+# pull ferric-* from /opt/ferric-repo, so the ISO is a complete system with
+# no dependency on hosted packages.
+if [[ -d local-repo ]]; then
+  echo "[ferric] staging local-repo -> airootfs /opt/ferric-repo"
+  rm -rf profile/airootfs/opt/ferric-repo
+  mkdir -p profile/airootfs/opt
+  cp -a local-repo profile/airootfs/opt/ferric-repo
+  python3 - profile/airootfs/etc/pacman.conf << 'EOF'
+import sys, re
+path = sys.argv[1]
+block = "[ferric]\nSigLevel = Optional TrustAll\nServer = file:///opt/ferric-repo"
+text = open(path).read()
+new = re.sub(r'(# FERRIC-REPO-BEGIN\n).*?(# FERRIC-REPO-END)',
+             r'\1' + block + '\n' + r'\2', text, flags=re.S)
+open(path, 'w').write(new)
+EOF
+  echo "[ferric] runtime [ferric] -> file:///opt/ferric-repo"
+fi
+
 echo "[ferric] updating keyring (stale keys are the #1 build failure)"
 sudo pacman -Sy --noconfirm archlinux-keyring
 
