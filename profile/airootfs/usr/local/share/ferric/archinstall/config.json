@@ -1,0 +1,58 @@
+{
+  "archinstall-language": "English",
+  "bootloader": "Grub",
+  "bootloader_config": {
+    "bootloader": "Grub",
+    "uki": false,
+    "removable": false
+  },
+  "hostname": "ferricos",
+  "kernels": ["linux"],
+  "locale_config": {
+    "kb_layout": "us",
+    "sys_enc": "UTF-8",
+    "sys_lang": "en_US"
+  },
+  "mirror_config": {
+    "custom_repositories": [
+      {
+        "name": "ferric",
+        "url": "https://github.com/notChewy1324/ferricos/releases/download/packages",
+        "sign_check": "Optional",
+        "sign_option": "TrustAll"
+      }
+    ],
+    "optional_repositories": ["multilib"]
+  },
+  "network_config": { "type": "nm" },
+  "ntp": true,
+  "packages": [
+    "ferric-base",
+    "linux-firmware",
+    "linux-headers",
+    "amd-ucode",
+    "intel-ucode",
+    "grub",
+    "efibootmgr",
+    "sudo",
+    "vim",
+    "git",
+    "plymouth",
+    "ferric-plymouth",
+    "ferric-grub-theme"
+  ],
+  "profile_config": null,
+  "swap": true,
+  "timezone": "UTC",
+  "custom_commands": [
+    "install -Dm644 /usr/share/ferric/greetd.toml /etc/greetd/config.toml",
+    "systemctl enable greetd.service",
+    "systemctl enable NetworkManager.service",
+    "sh -c 'grep -qE \"^HOOKS=.*plymouth\" /etc/mkinitcpio.conf || sed -i \"s/\\budev\\b/udev plymouth/\" /etc/mkinitcpio.conf'",
+    "plymouth-set-default-theme ferric",
+    "sh -c 'grep -q splash /etc/default/grub || sed -i \"s/^GRUB_CMDLINE_LINUX_DEFAULT=\\\"/&splash /\" /etc/default/grub'",
+    "sh -c 'if grep -q \"^#\\?GRUB_THEME=\" /etc/default/grub; then sed -i \"s|^#\\?GRUB_THEME=.*|GRUB_THEME=\\\"/usr/share/grub/themes/ferric/theme.txt\\\"|\" /etc/default/grub; else echo GRUB_THEME=\\\"/usr/share/grub/themes/ferric/theme.txt\\\" >> /etc/default/grub; fi'",
+    "mkinitcpio -P",
+    "grub-mkconfig -o /boot/grub/grub.cfg"
+  ]
+}

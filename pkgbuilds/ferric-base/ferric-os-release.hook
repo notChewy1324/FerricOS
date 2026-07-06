@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = filesystem
+Target = ferric-base
+
+[Action]
+Description = Applying FerricOS identity to /etc/os-release...
+When = PostTransaction
+Depends = coreutils
+Exec = /usr/bin/sh -c 'rm -f /etc/os-release && install -m644 /usr/share/ferric/os-release /etc/os-release'

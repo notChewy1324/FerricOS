@@ -1,0 +1,3 @@
+# Both CI workflows append a row to BUILDLOG.md and push; union merge
+# keeps both rows instead of conflicting when the runs finish together.
+BUILDLOG.md merge=union

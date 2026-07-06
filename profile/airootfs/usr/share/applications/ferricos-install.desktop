@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Install FerricOS
+GenericName=System Installer
+Comment=Install FerricOS to disk — ext4, btrfs, or LUKS
+Exec=/usr/local/bin/install-ferricos
+Icon=/usr/share/calamares/branding/ferric/icon.png
+Terminal=false
+Categories=System;
+Keywords=install;installer;calamares;

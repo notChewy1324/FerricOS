@@ -1,0 +1,4 @@
+#!/bin/sh
+# Live-session launcher for the graphical FerricOS installer.
+# pkexec is served by the polkit-gnome agent Hyprland autostarts.
+exec pkexec calamares

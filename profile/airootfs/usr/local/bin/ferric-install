@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# FerricOS guided installer (Stage 1): archinstall preseeded with the
+# FerricOS package set, [ferric]+[multilib] on the target, greetd +
+# NetworkManager enabled. Disk layout, users, and passwords are asked
+# interactively — nothing destructive is preseeded.
+#
+# Live-only (airootfs). NVIDIA boxes: answer "yes" when prompted below;
+# hardware drivers are intentionally NOT part of ferric-base.
+set -euo pipefail
+
+CONFIG=/usr/local/share/ferric/archinstall/config.json
+
+if [[ $EUID -ne 0 ]]; then
+    exec sudo "$0" "$@"
+fi
+
+echo "FERRICOS // INSTALL — archinstall, preseeded"
+echo "  disk layout + user accounts are chosen interactively."
+read -r -p "Add NVIDIA drivers (nvidia-dkms) to the install? [y/N] " nv
+
+if [[ "${nv,,}" == y* ]]; then
+    tmp="$(mktemp)"
+    python3 - "$CONFIG" > "$tmp" << 'EOF'
+import json, sys
+cfg = json.load(open(sys.argv[1]))
+cfg["packages"] += ["nvidia-dkms", "nvidia-utils", "egl-wayland"]
+json.dump(cfg, sys.stdout, indent=2)
+EOF
+    CONFIG="$tmp"
+fi
+
+exec archinstall --config "$CONFIG"

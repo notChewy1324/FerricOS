@@ -1,0 +1,18 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# GRUB theme for INSTALLED FerricOS systems (the live ISO's BIOS menu is
+# syslinux, themed in profile/syslinux/archiso_head.cfg; live UEFI is
+# text-only systemd-boot by design). Activation is done by the Calamares
+# shellprocess@bootcfg step: GRUB_THEME=/usr/share/grub/themes/ferric/theme.txt
+
+pkgname=ferric-grub-theme
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS GRUB theme — ferric oxide on near-black, instrument-panel layout"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+
+package() {
+  install -d "$pkgdir/usr/share/grub/themes/ferric"
+  install -Dm644 "$startdir"/theme/* -t "$pkgdir/usr/share/grub/themes/ferric/"
+}

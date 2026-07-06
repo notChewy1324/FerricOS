@@ -1,0 +1,10 @@
+# FerricOS greetd config for INSTALLED systems (no autologin — that's
+# live-only). Copied to /etc/greetd/config.toml by the installers from
+# /usr/share/ferric/greetd.toml; kept out of the package's /etc so it
+# never conflicts with greetd's own config file.
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --time --remember --asterisks --cmd Hyprland --greeting 'FERRICOS // TERMINAL LOGIN' --theme 'container=black;border=darkgray;title=red;greet=red;prompt=gray;input=white;action=darkgray;button=red;text=gray;time=darkgray'"
+user = "greeter"

@@ -1,0 +1,29 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# Standard Arch keyring-package pattern (cf. archlinux-keyring): ships the
+# FerricOS packager key(s) under /usr/share/pacman/keyrings and populates
+# the pacman keyring on install/upgrade via the .install scriptlet.
+#
+# NOT BUILDABLE until the real key material lands — see README.md in this
+# directory. build-packages-local.sh and CI skip this package while
+# ferric.gpg is missing. Once published, flip [ferric] SigLevel from
+# "Optional TrustAll" to "Required DatabaseOptional" in BOTH pacman.confs
+# and sign packages + repo db (makepkg --sign / repo-add --sign).
+
+pkgname=ferric-keyring
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS PGP keyring — trusts the ferric package signing key"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+install=ferric-keyring.install
+source=('ferric.gpg'
+        'ferric-trusted'
+        'ferric-revoked')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+package() {
+  install -Dm644 "$srcdir/ferric.gpg"    "$pkgdir/usr/share/pacman/keyrings/ferric.gpg"
+  install -Dm644 "$srcdir/ferric-trusted" "$pkgdir/usr/share/pacman/keyrings/ferric-trusted"
+  install -Dm644 "$srcdir/ferric-revoked" "$pkgdir/usr/share/pacman/keyrings/ferric-revoked"
+}

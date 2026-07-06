@@ -1,0 +1,9 @@
+[38;2;216;90;48m  +============================================+
+  |  FERRICOS // LIVE ENVIRONMENT              |
+  |  signal acquired - tape head engaged       |
+  +============================================+[0m
+
+This is a live session - changes do not persist after reboot.
+
+Network: [35miwctl[0m for Wi-Fi - DHCP ethernet is automatic.
+Arch install guide: https://wiki.archlinux.org/title/Installation_guide

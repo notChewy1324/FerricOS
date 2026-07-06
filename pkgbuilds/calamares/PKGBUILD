@@ -1,0 +1,58 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# Calamares is AUR-only on Arch, so FerricOS carries its own build in
+# [ferric]. Derived from the AUR calamares PKGBUILD (Qt6 build, upstream
+# moved to Codeberg). Bump pkgver alongside upstream releases.
+# NOTE: this one COMPILES — CI/local builds need makepkg -s (real deps),
+# which build-packages-local.sh / build-packages.yml provide.
+
+pkgname=calamares
+pkgver=3.4.2
+pkgrel=1
+pkgdesc="Distribution-independent system installer (FerricOS build)"
+arch=('x86_64')
+url="https://codeberg.org/Calamares/calamares"
+license=('GPL-3.0-or-later')
+depends=(
+  'kcoreaddons'
+  'kpmcore'
+  'libpwquality'
+  'qt6-declarative'
+  'qt6-svg'
+  'yaml-cpp'
+  # runtime for the FerricOS module sequence
+  'arch-install-scripts'
+  'gptfdisk'
+  'cryptsetup'
+  'polkit'
+)
+makedepends=(
+  'extra-cmake-modules'
+  'libglvnd'
+  'ninja'
+  'qt6-tools'
+  'qt6-translations'
+  'python'
+)
+source=("$pkgname-$pkgver.tar.gz::$url/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  local skip=(
+    dracut dracutlukscfg dummycpp dummyprocess dummypython dummypythonqt
+    initramfs initramfscfg interactiveterminal packagechooser
+    packagechooserq services-openrc
+  )
+  cmake -B build -S "$pkgname-$pkgver" -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DWITH_QT6=ON \
+    -DINSTALL_CONFIG=ON \
+    -DBUILD_TESTING=OFF \
+    -DSKIP_MODULES="${skip[*]}"
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

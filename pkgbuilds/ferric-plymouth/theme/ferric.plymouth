@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Ferric
+Description=FerricOS boot splash — dark field, wordmark, tape-spool progress
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ferric
+ScriptFile=/usr/share/plymouth/themes/ferric/ferric.script

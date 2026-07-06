@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Creates the throwaway live-session user. Runs ONCE at live boot
+# (ferric-live-user.service, gated on archisobasedir), against the in-RAM
+# live filesystem only. Never reaches an installed disk.
+#
+# Deliberately no `set -e`: a partial failure here must not take down the
+# boot path to greetd. Debug with: journalctl -u ferric-live-user.service
+
+if ! id ferric &>/dev/null; then
+    useradd -m \
+        -G wheel,video,audio,input,storage,lp \
+        -s /usr/bin/zsh \
+        -c "FerricOS Live" \
+        ferric
+fi
+
+# Passwordless: throwaway live env, greetd autologin needs no password.
+# Sudo rights ship statically in /etc/sudoers.d/ferric-live.
+passwd -d ferric

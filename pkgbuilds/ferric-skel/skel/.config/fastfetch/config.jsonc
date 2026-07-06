@@ -1,0 +1,20 @@
+// FerricOS — fastfetch
+{
+  "logo": {
+    "source": "~/.config/fastfetch/ferric.txt",
+    "type": "file",
+    "color": { "1": "38;2;216;90;48", "2": "38;2;84;76;68" },
+    "padding": { "right": 3 }
+  },
+  "display": { "separator": "  " },
+  "modules": [
+    { "type": "os", "key": "OS" },
+    { "type": "kernel", "key": "KRN" },
+    { "type": "wm", "key": "WM" },
+    { "type": "shell", "key": "SH" },
+    { "type": "terminal", "key": "TERM" },
+    { "type": "uptime", "key": "UP" },
+    { "type": "memory", "key": "MEM" },
+    { "type": "custom", "key": "DEV", "format": "Cam Garrison" }
+  ]
+}

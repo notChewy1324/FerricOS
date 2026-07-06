@@ -1,0 +1,24 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# FerricOS wallpapers and visual identity. One home for artwork (rule 3):
+# these files ship ONLY here, never in profile/airootfs.
+
+pkgname=ferric-artwork
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="FerricOS wallpapers and visual identity — Quiet Ferric oxide set"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+source=('oxide.png'
+        'oxide-deep.png'
+        'oxide-grid.png'
+        'oxide-sun.png')
+# SKIP: artwork iterates; content is trusted from this repo, not a remote.
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+
+package() {
+  for wall in oxide oxide-deep oxide-grid oxide-sun; do
+    install -Dm644 "$srcdir/$wall.png" \
+      "$pkgdir/usr/share/backgrounds/ferric/$wall.png"
+  done
+}

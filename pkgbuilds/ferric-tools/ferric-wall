@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# ferric-wall — cycle the oxide wallpaper set via hyprpaper.
+#   ferric-wall            next wallpaper
+#   ferric-wall oxide-sun  jump to a specific one
+#   ferric-wall status     print the current one
+set -euo pipefail
+
+DIR=/usr/share/backgrounds/ferric
+WALLS=(oxide oxide-deep oxide-grid oxide-sun)
+STATE="${XDG_CACHE_HOME:-$HOME/.cache}/ferric-wall"
+
+current=""
+[[ -f "$STATE" ]] && current="$(<"$STATE")"
+
+case "${1:-next}" in
+  status)
+    echo "${current:-oxide}"
+    exit 0
+    ;;
+  next)
+    idx=0
+    for i in "${!WALLS[@]}"; do
+      [[ "${WALLS[$i]}" == "$current" ]] && idx=$(( (i + 1) % ${#WALLS[@]} ))
+    done
+    target="${WALLS[$idx]}"
+    ;;
+  *)
+    target="$1"
+    [[ -f "$DIR/$target.png" ]] || {
+      echo "ferric-wall: no such wallpaper: $target (have: ${WALLS[*]})" >&2
+      exit 1
+    }
+    ;;
+esac
+
+hyprctl hyprpaper preload "$DIR/$target.png" >/dev/null
+hyprctl hyprpaper wallpaper ",$DIR/$target.png" >/dev/null
+# unload the rest so hyprpaper doesn't hoard VRAM
+for w in "${WALLS[@]}"; do
+  [[ "$w" != "$target" ]] && hyprctl hyprpaper unload "$DIR/$w.png" >/dev/null 2>&1 || true
+done
+
+mkdir -p "$(dirname "$STATE")"
+printf '%s\n' "$target" > "$STATE"
+echo "wallpaper // $target"

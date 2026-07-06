@@ -1,0 +1,15 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# Small FerricOS userland tools.
+
+pkgname=ferric-tools
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS helper tools — ferric-wall wallpaper cycler"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+depends=('bash' 'hyprpaper' 'ferric-artwork')
+
+package() {
+  install -Dm755 "$startdir/ferric-wall" "$pkgdir/usr/bin/ferric-wall"
+}

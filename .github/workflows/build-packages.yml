@@ -1,0 +1,115 @@
+name: Build FerricOS packages
+
+on:
+  workflow_dispatch:          # manual "Run workflow" button
+  push:
+    branches: [main]
+    paths:
+      - "pkgbuilds/**"
+
+permissions:
+  contents: write             # needed to update the `packages` release
+
+env:
+  REPO_TAG: packages          # fixed release tag = the pacman repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+    steps:
+      - name: Install build dependencies
+        run: |
+          pacman -Syu --noconfirm base-devel git github-cli sudo
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create build user (makepkg refuses root)
+        run: |
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/builder
+          chown -R builder:builder .
+
+      - name: Build packages
+        run: |
+          for d in pkgbuilds/*/; do
+            pkg="$(basename "$d")"
+            if [ "$pkg" = "ferric-keyring" ] && [ ! -f "$d/ferric.gpg" ]; then
+              echo "SKIP $pkg (no key material committed yet)"
+              continue
+            fi
+            echo "::group::$pkg"
+            # calamares is the only PKGBUILD that compiles: -s pulls its
+            # makedepends from the Arch repos. Everything else is a meta/
+            # file-only package whose depends include ferric-* (and calamares)
+            # — not installable until THIS run publishes them — so build those
+            # with -d: deps still land in .PKGINFO for install time.
+            if [ "$pkg" = "calamares" ]; then
+              flags="-s"
+            else
+              flags="-d"
+            fi
+            su builder -c "cd '$d' && makepkg -f $flags --noconfirm"
+            echo "::endgroup::"
+          done
+          mkdir -p local-repo
+          mv pkgbuilds/*/*.pkg.tar.zst local-repo/
+
+      - name: Build pacman repo database
+        run: |
+          cd local-repo
+          repo-add -R ferric.db.tar.gz ./*.pkg.tar.zst
+          # Release assets can't be symlinks — repo-add makes ferric.db and
+          # ferric.files symlinks, so replace them with real copies.
+          cp -L ferric.db ferric.db.real && mv ferric.db.real ferric.db
+          cp -L ferric.files ferric.files.real && mv ferric.files.real ferric.files
+          ls -l
+
+      - name: Upload to the fixed `packages` release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          gh release create "$REPO_TAG" \
+            --title "FerricOS package repo" \
+            --notes "Rolling pacman repo. Server = https://github.com/${GITHUB_REPOSITORY}/releases/download/$REPO_TAG" \
+            2>/dev/null || true
+          gh release upload "$REPO_TAG" \
+            local-repo/*.pkg.tar.zst \
+            local-repo/ferric.db.tar.gz \
+            local-repo/ferric.files.tar.gz \
+            local-repo/ferric.db \
+            local-repo/ferric.files \
+            --clobber
+
+      - name: Smoke-test the published repo
+        run: |
+          cat >> /etc/pacman.conf << EOF
+          [ferric]
+          SigLevel = Optional TrustAll
+          Server = https://github.com/${GITHUB_REPOSITORY}/releases/download/$REPO_TAG
+          EOF
+          pacman -Sy
+          pacman -Si ferric-base
+
+      - name: Commit run to BUILDLOG.md
+        if: always()
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "notChewy1324"
+          git config user.email "40218645+notChewy1324@users.noreply.github.com"
+          echo "| $(date -u +%Y-%m-%dT%H:%MZ) | ${{ github.workflow }} | #${{ github.run_number }} | ${{ job.status }} | [run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |" >> BUILDLOG.md
+          git add BUILDLOG.md
+          git commit -m "ci: ${{ github.workflow }} run #${{ github.run_number }} (${{ job.status }})"
+          # the ISO and packages workflows can land at once — merge=union in
+          # .gitattributes resolves concurrent BUILDLOG appends; retry the
+          # pull+push in case another run pushes between the two commands.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main || { git rebase --abort || true; sleep 3; continue; }
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          echo "::error::could not push BUILDLOG.md after 3 attempts"
+          exit 1

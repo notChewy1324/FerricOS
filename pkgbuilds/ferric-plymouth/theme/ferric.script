@@ -1,0 +1,99 @@
+// FerricOS plymouth splash — Quiet Ferric.
+// Flat #0C0B0A field, wordmark, two counter-rotating tape spools feeding a
+// seam-colored tape line that fills ferric-oxide with boot progress.
+// No gradients, no glow (palette rule).
+
+// flat background (top == bottom -> solid)
+Window.SetBackgroundTopColor(0.047, 0.043, 0.039);
+Window.SetBackgroundBottomColor(0.047, 0.043, 0.039);
+
+screen.w = Window.GetWidth();
+screen.h = Window.GetHeight();
+screen.cx = screen.w / 2;
+screen.cy = screen.h / 2;
+
+// ── wordmark ────────────────────────────────────────────
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.sprite.SetPosition(screen.cx - logo.image.GetWidth() / 2,
+                        screen.cy - logo.image.GetHeight() / 2 - 90, 10);
+
+// ── tape transport: two spools + tape path ──────────────
+spool.image = Image("spool.png");
+spool.gap = 260;                       // center-to-center
+spool.y = screen.cy + 80;
+spool.lx = screen.cx - spool.gap / 2;
+spool.rx = screen.cx + spool.gap / 2;
+spool.left = Sprite();
+spool.right = Sprite();
+spool.angle = 0;
+
+// tape line between the spools (static, seam color)
+tape.image = Image("bar-seam.png");
+tape.w = spool.gap - 96;
+tape.sprite = Sprite(tape.image.Scale(tape.w, 2));
+tape.sprite.SetPosition(screen.cx - tape.w / 2, spool.y - 1, 5);
+
+// ── progress bar: 1px ferric line under everything ──────
+progress.w = 320;
+progress.h = 2;
+progress.x = screen.cx - progress.w / 2;
+progress.y = spool.y + 90;
+progress.bg.image = Image("bar-seam.png");
+progress.bg.sprite = Sprite(progress.bg.image.Scale(progress.w, progress.h));
+progress.bg.sprite.SetPosition(progress.x, progress.y, 6);
+progress.fg.image = Image("bar-accent.png");
+progress.fg.sprite = Sprite();
+progress.fg.sprite.SetPosition(progress.x, progress.y, 7);
+
+fun refresh_callback() {
+    spool.angle += 0.06;
+    spool.left.SetImage(spool.image.Rotate(spool.angle));
+    spool.right.SetImage(spool.image.Rotate(-spool.angle));
+    spool.left.SetPosition(spool.lx - spool.image.GetWidth() / 2,
+                           spool.y - spool.image.GetHeight() / 2, 8);
+    spool.right.SetPosition(spool.rx - spool.image.GetWidth() / 2,
+                            spool.y - spool.image.GetHeight() / 2, 8);
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun boot_progress_callback(duration, progress_val) {
+    fill = progress.w * progress_val;
+    if (fill < 1) fill = 1;
+    progress.fg.sprite.SetImage(progress.fg.image.Scale(fill, progress.h));
+}
+Plymouth.SetBootProgressFunction(boot_progress_callback);
+
+// ── messages (fsck etc.) ────────────────────────────────
+message.sprite = Sprite();
+fun message_callback(text) {
+    message.image = Image.Text(text, 0.788, 0.749, 0.698);  // #C9BFB2
+    message.sprite.SetImage(message.image);
+    message.sprite.SetPosition(screen.cx - message.image.GetWidth() / 2,
+                               progress.y + 30, 9);
+}
+Plymouth.SetMessageFunction(message_callback);
+
+// ── LUKS passphrase prompt ──────────────────────────────
+prompt.sprite = Sprite();
+bullets.sprite = Sprite();
+fun display_password_callback(prompt_text, bullet_count) {
+    prompt.image = Image.Text("UNLOCK // enter passphrase",
+                              0.847, 0.353, 0.188);          // #D85A30
+    prompt.sprite.SetImage(prompt.image);
+    prompt.sprite.SetPosition(screen.cx - prompt.image.GetWidth() / 2,
+                              progress.y + 30, 11);
+    dots = "";
+    for (i = 0; i < bullet_count; i++)
+        dots += "▪ ";
+    bullets.image = Image.Text(dots, 0.910, 0.863, 0.784);   // #E8DCC8
+    bullets.sprite.SetImage(bullets.image);
+    bullets.sprite.SetPosition(screen.cx - bullets.image.GetWidth() / 2,
+                               progress.y + 56, 11);
+}
+fun display_normal_callback() {
+    prompt.sprite.SetImage(Image.Text("", 0, 0, 0));
+    bullets.sprite.SetImage(Image.Text("", 0, 0, 0));
+}
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);

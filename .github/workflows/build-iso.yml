@@ -1,0 +1,93 @@
+name: Build FerricOS ISO
+
+on:
+  workflow_dispatch:        # manual "Run workflow" button
+  schedule:
+    - cron: "0 8 1 * *"     # monthly: 1st of the month, 08:00 UTC
+
+permissions:
+  contents: write           # needed to create releases
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      options: --privileged
+    steps:
+      - name: Install build dependencies
+        run: |
+          pacman -Syu --noconfirm archiso git github-cli python
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Wire [ferric] repo at the packages release
+        run: |
+          python3 - << 'EOF'
+          import re
+          url = "https://github.com/${{ github.repository }}/releases/download/packages"
+          block = f"[ferric]\nSigLevel = Optional TrustAll\nServer = {url}"
+          for path in ("profile/pacman.conf", "profile/airootfs/etc/pacman.conf"):
+              text = open(path).read()
+              new = re.sub(r'(# FERRIC-REPO-BEGIN\n).*?(# FERRIC-REPO-END)',
+                           r'\1' + block + '\n' + r'\2', text, flags=re.S)
+              open(path, 'w').write(new)
+              print(f"wired {path}")
+          EOF
+          # TODO once ferric-keyring is published: import + locally sign the
+          # ferric key here and flip SigLevel to Required DatabaseOptional.
+
+      - name: Build ISO
+        run: |
+          mkarchiso -v -w /tmp/work -o /tmp/out ./profile
+          ls -lh /tmp/out
+
+      - name: Checksums
+        run: |
+          cd /tmp/out
+          sha256sum *.iso > SHA256SUMS
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          TAG="v$(date +%Y.%m.%d)"
+          # GitHub hard-caps release assets at 2 GiB — fail loudly, not with a 422
+          for f in /tmp/out/*.iso; do
+            size=$(stat -c%s "$f")
+            if [ "$size" -ge 2147483648 ]; then
+              echo "::error::$f is $size bytes — over GitHub's 2 GiB release-asset limit; trim profile/packages.x86_64"
+              exit 1
+            fi
+          done
+          # create the release without assets first: if `gh release create` fails
+          # mid-upload it rolls the whole release back, stranding the retry.
+          gh release view "$TAG" > /dev/null 2>&1 \
+            || gh release create "$TAG" \
+                 --title "FerricOS $TAG" \
+                 --notes "Automated monthly build. Verify with SHA256SUMS."
+          gh release upload "$TAG" /tmp/out/*.iso /tmp/out/SHA256SUMS --clobber
+
+      - name: Commit run to BUILDLOG.md
+        if: always()
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "notChewy1324"
+          git config user.email "40218645+notChewy1324@users.noreply.github.com"
+          echo "| $(date -u +%Y-%m-%dT%H:%MZ) | ${{ github.workflow }} | #${{ github.run_number }} | ${{ job.status }} | [run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) |" >> BUILDLOG.md
+          # the repo-wiring step dirtied the pacman.confs — only BUILDLOG.md
+          # goes in the commit; --autostash keeps the rebase happy.
+          git add BUILDLOG.md
+          git commit -m "ci: ${{ github.workflow }} run #${{ github.run_number }} (${{ job.status }})"
+          # the ISO and packages workflows can land at once — merge=union in
+          # .gitattributes resolves concurrent BUILDLOG appends; retry the
+          # pull+push in case another run pushes between the two commands.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main || { git rebase --abort || true; sleep 3; continue; }
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          echo "::error::could not push BUILDLOG.md after 3 attempts"
+          exit 1

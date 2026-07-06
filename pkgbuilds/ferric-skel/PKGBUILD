@@ -1,0 +1,21 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# The FerricOS rice. Everything under skel/ lands in /etc/skel, so every
+# NEW user on a FerricOS system starts with the Quiet Ferric desktop.
+# The live ISO gets it the same way: useradd -m copies /etc/skel.
+
+pkgname=ferric-skel
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS default user configuration (/etc/skel) — Hyprland, waybar, kitty, fuzzel, mako, fastfetch, zsh"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+depends=('zsh' 'zsh-autosuggestions')
+
+package() {
+  # config tree lives in git next to this PKGBUILD (skel/), not in source=()
+  install -d -m755 "$pkgdir/etc/skel"
+  cp -a "$startdir/skel/." "$pkgdir/etc/skel/"
+  find "$pkgdir/etc/skel" -type d -exec chmod 755 {} +
+  find "$pkgdir/etc/skel" -type f -exec chmod 644 {} +
+}

@@ -1,0 +1,35 @@
+---
+componentName: ferric
+welcomeStyleCalamares: false
+welcomeExpandingLogo: false
+windowExpanding: normal
+windowSize: 1000px,640px
+windowPlacement: center
+
+strings:
+  productName:         FerricOS
+  shortProductName:    FerricOS
+  version:             rolling
+  shortVersion:        rolling
+  versionedName:       FerricOS rolling
+  shortVersionedName:  FerricOS
+  bootloaderEntryName: FerricOS
+  productUrl:          https://github.com/notChewy1324/ferricos
+  supportUrl:          https://github.com/notChewy1324/ferricos/issues
+  knownIssuesUrl:      https://github.com/notChewy1324/ferricos/issues
+  releaseNotesUrl:     https://github.com/notChewy1324/ferricos/releases
+
+images:
+  productLogo:         "logo.png"
+  productIcon:         "icon.png"
+  productWelcome:      "welcome.png"
+
+slideshow: "slideshow.qml"
+slideshowAPI: 2
+
+# Quiet Ferric — flat panels, 1px seams, no glow.
+style:
+  sidebarBackground:    "#11100E"
+  sidebarText:          "#C9BFB2"
+  sidebarTextSelect:    "#0C0B0A"
+  sidebarTextHighlight: "#D85A30"

@@ -1,0 +1,54 @@
+# FerricOS GRUB theme — Quiet Ferric.
+# Uses GRUB's built-in unicode font; #D85A30 accents on #0C0B0A.
+
+desktop-image: "background.png"
+desktop-color: "#0C0B0A"
+title-text: ""
+
++ label {
+    left = 30%
+    top = 32%
+    width = 40%
+    align = "center"
+    color = "#544C44"
+    text = "BOOT MEDIA // SELECT"
+}
+
++ boot_menu {
+    left = 30%
+    top = 38%
+    width = 40%
+    height = 40%
+    item_color = "#C9BFB2"
+    # no highlight pixmap, so the selection is marked by color alone —
+    # oxide accent, NOT bg-on-bg (which would be invisible)
+    selected_item_color = "#D85A30"
+    item_height = 32
+    item_padding = 4
+    item_spacing = 8
+    icon_width = 0
+    icon_height = 0
+    item_icon_space = 0
+    scrollbar = false
+}
+
++ progress_bar {
+    id = "__timeout__"
+    left = 30%
+    top = 82%
+    width = 40%
+    height = 4
+    fg_color = "#D85A30"
+    bg_color = "#2E2A26"
+    border_color = "#2E2A26"
+    text = ""
+}
+
++ label {
+    left = 30%
+    top = 86%
+    width = 40%
+    align = "center"
+    color = "#544C44"
+    text = "FerricOS // developed by Cam Garrison"
+}

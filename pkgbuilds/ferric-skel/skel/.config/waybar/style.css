@@ -1,0 +1,35 @@
+/* FerricOS // Quiet Ferric */
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 12px;
+  min-height: 0;
+}
+window#waybar {
+  background: #0C0B0A;
+  color: #C9BFB2;
+  border-bottom: 1px solid #2E2A26;
+}
+#workspaces button {
+  padding: 0 8px;
+  color: #544C44;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+#workspaces button.active {
+  color: #D85A30;
+  border-bottom: 1px solid #D85A30;
+}
+#workspaces button.urgent { color: #C14A3A; }
+#clock { color: #D85A30; letter-spacing: 1px; }
+#network, #pulseaudio, #cpu, #memory, #battery, #tray {
+  padding: 0 10px;
+  color: #8A7A6E;
+}
+#battery.warning  { color: #D8AE5B; }
+#battery.critical { color: #C14A3A; }
+tooltip {
+  background: #11100E;
+  border: 1px solid #2E2A26;
+  border-radius: 4px;
+}

@@ -1,0 +1,19 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# FerricOS Plymouth splash. Ships the theme only — activation on installed
+# systems is done by the Calamares shellprocess@bootcfg step (adds the
+# `plymouth` mkinitcpio hook + `quiet splash` kernel params + sets the
+# theme). Manual activation: plymouth-set-default-theme -R ferric
+
+pkgname=ferric-plymouth
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS Plymouth boot splash — dark field, wordmark, tape-spool progress"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+depends=('plymouth')
+
+package() {
+  install -d "$pkgdir/usr/share/plymouth/themes/ferric"
+  install -Dm644 "$startdir"/theme/* -t "$pkgdir/usr/share/plymouth/themes/ferric/"
+}

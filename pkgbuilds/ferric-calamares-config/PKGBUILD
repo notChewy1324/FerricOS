@@ -1,0 +1,27 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# Calamares configuration + Quiet Ferric branding for the FerricOS
+# installer. Pairs with the [ferric] calamares package. The live-session
+# "Install FerricOS" launcher stays in profile/airootfs (live-only).
+
+pkgname=ferric-calamares-config
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="FerricOS Calamares configuration and Quiet Ferric branding"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+depends=('calamares')
+
+package() {
+  install -Dm644 "$startdir/settings.conf" "$pkgdir/etc/calamares/settings.conf"
+
+  install -d "$pkgdir/etc/calamares/modules"
+  for conf in "$startdir"/modules/*.conf; do
+    install -Dm644 "$conf" "$pkgdir/etc/calamares/modules/$(basename "$conf")"
+  done
+
+  install -d "$pkgdir/usr/share/calamares/branding/ferric"
+  for f in "$startdir"/branding/ferric/*; do
+    install -Dm644 "$f" "$pkgdir/usr/share/calamares/branding/ferric/$(basename "$f")"
+  done
+}

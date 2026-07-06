@@ -1,0 +1,14 @@
+[Unit]
+Description=Create FerricOS live session user
+After=systemd-tmpfiles-setup.service
+Before=greetd.service
+# Only fire in the live ISO env never on an installed system
+ConditionKernelCommandLine=archisobasedir
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/ferric-live-setup
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+[terminal]
+vt = 1
+
+# autologin straight into Hyprland on the live ISO
+[initial_session]
+command = "Hyprland"
+user = "ferric"
+
+# greeter shown on logout — text-based, very ferric.
+# tuigreet only takes named terminal colors, so the ferric accent maps to
+# "red" (VT palette) — closest available to oxide #D85A30.
+[default_session]
+command = "tuigreet --time --remember --asterisks --cmd Hyprland --greeting 'FERRICOS // TERMINAL LOGIN' --theme 'container=black;border=darkgray;title=red;greet=red;prompt=gray;input=white;action=darkgray;button=red;text=gray;time=darkgray'"
+user = "greeter"

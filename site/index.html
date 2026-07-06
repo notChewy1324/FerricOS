@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FerricOS — an Arch-based distro with a cassette-futurism soul</title>
+  <meta name="description" content="FerricOS is a rolling-release Arch Linux derivative — magnetic tape, sodium light, and a quiet terminal. Hyprland tuned to one palette: oxide on near-black, 1px seams, no blur, no glow.">
+  <meta name="theme-color" content="#0C0B0A">
+  <link rel="canonical" href="https://notchewy1324.github.io/ferricos/">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FerricOS">
+  <meta property="og:title" content="FerricOS — an Arch-based distro with a cassette-futurism soul">
+  <meta property="og:description" content="Magnetic tape, sodium light, and a quiet terminal. Hyprland tuned to one palette — oxide on near-black. Real Arch underneath.">
+  <meta property="og:url" content="https://notchewy1324.github.io/ferricos/">
+  <meta property="og:image" content="https://notchewy1324.github.io/ferricos/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FerricOS — an Arch-based distro with a cassette-futurism soul">
+  <meta name="twitter:description" content="Magnetic tape, sodium light, and a quiet terminal. Real Arch underneath.">
+  <meta name="twitter:image" content="https://notchewy1324.github.io/ferricos/assets/og.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "FerricOS",
+    "operatingSystem": "Linux",
+    "applicationCategory": "OperatingSystem",
+    "description": "A rolling-release Arch Linux derivative with a cassette-futurism desktop: Hyprland, waybar, kitty, fuzzel, and mako tuned to one palette.",
+    "author": { "@type": "Person", "name": "Cam Garrison" },
+    "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "downloadUrl": "https://github.com/notChewy1324/ferricos/releases",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230C0B0A'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23D85A30' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23D85A30'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#top">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#top" class="nav-brand">
+        <svg class="nav-reel" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
+          <line x1="12" y1="3" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="19.8" y1="16.5" x2="16.3" y2="14.5" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="4.2" y1="16.5" x2="7.7" y2="14.5" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>FerricOS</span>
+      </a>
+      <nav class="nav-links" id="navMenu">
+        <a href="#features">Features</a>
+        <a href="#boot">Boot</a>
+        <a href="#desktop">Desktop</a>
+        <a href="#wallpapers">Wallpapers</a>
+        <a href="#install">Install</a>
+        <a href="#packages">Packages</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/notChewy1324/ferricos" class="nav-gh" target="_blank" rel="noopener">Source ↗</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <main id="top">
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-kicker">// ferric oxide · Fe₂O₃ · rolling release</p>
+          <h1 class="hero-title">
+            An Arch-based distro with a<br>
+            <span class="accent" id="typeTarget">cassette-futurism soul<span class="cursor">▌</span></span>
+          </h1>
+          <p class="hero-sub">
+            Magnetic tape, sodium light, and a quiet terminal.
+            Hyprland tuned to one palette — oxide on near-black,
+            1px seams, no blur, no glow. Real Arch underneath.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" id="downloadBtn" href="https://github.com/notChewy1324/ferricos/releases" target="_blank" rel="noopener">
+              ⭳ Download ISO
+            </a>
+            <a class="btn btn-ghost" href="#install">Install guide</a>
+          </div>
+          <div class="hero-meta">
+            <span id="releaseBadge">rolling</span><i></i><span>x86_64</span><i></i><span>BIOS + UEFI</span><i></i><span>GPL-3.0</span>
+          </div>
+        </div>
+
+        <!-- cassette deck -->
+        <div class="deck" aria-hidden="true">
+          <div class="deck-label">
+            <span class="deck-dot"></span>
+            <span class="deck-name">FERRIC · TYPE IV METAL</span>
+            <span class="deck-side">SIDE A</span>
+          </div>
+          <div class="deck-window">
+            <svg class="reel reel-l" viewBox="0 0 80 80" width="72" height="72">
+              <circle cx="40" cy="40" r="36" fill="none" stroke="#544C44" stroke-width="2"/>
+              <circle cx="40" cy="40" r="24" fill="none" stroke="#2E2A26" stroke-width="14"/>
+              <circle cx="40" cy="40" r="10" fill="#0C0B0A" stroke="#D85A30" stroke-width="2"/>
+              <g stroke="#D85A30" stroke-width="2.5" stroke-linecap="round">
+                <line x1="40" y1="32" x2="40" y2="26"/>
+                <line x1="46.9" y1="44" x2="52.1" y2="47"/>
+                <line x1="33.1" y1="44" x2="27.9" y2="47"/>
+              </g>
+            </svg>
+            <div class="tape-line"></div>
+            <svg class="reel reel-r" viewBox="0 0 80 80" width="72" height="72">
+              <circle cx="40" cy="40" r="36" fill="none" stroke="#544C44" stroke-width="2"/>
+              <circle cx="40" cy="40" r="18" fill="none" stroke="#2E2A26" stroke-width="8"/>
+              <circle cx="40" cy="40" r="10" fill="#0C0B0A" stroke="#D85A30" stroke-width="2"/>
+              <g stroke="#D85A30" stroke-width="2.5" stroke-linecap="round">
+                <line x1="40" y1="32" x2="40" y2="26"/>
+                <line x1="46.9" y1="44" x2="52.1" y2="47"/>
+                <line x1="33.1" y1="44" x2="27.9" y2="47"/>
+              </g>
+            </svg>
+          </div>
+          <div class="deck-vu">
+            <div class="vu-bar" style="--d:0s"></div>
+            <div class="vu-bar" style="--d:.13s"></div>
+            <div class="vu-bar" style="--d:.27s"></div>
+            <div class="vu-bar" style="--d:.41s"></div>
+            <div class="vu-bar" style="--d:.19s"></div>
+            <div class="vu-bar" style="--d:.33s"></div>
+            <div class="vu-bar" style="--d:.07s"></div>
+            <div class="vu-bar" style="--d:.47s"></div>
+          </div>
+          <div class="deck-readout">
+            <span class="rec-dot"></span> REC&nbsp;&nbsp;<span id="deckCounter">0000</span>&nbsp;&nbsp;pacman -Syu
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TICKER ============ -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="tickerTrack">
+        <span>HYPRLAND</span><span>◦</span><span>WAYBAR</span><span>◦</span><span>KITTY</span><span>◦</span>
+        <span>FUZZEL</span><span>◦</span><span>MAKO</span><span>◦</span><span>PLYMOUTH</span><span>◦</span>
+        <span>TUIGREET</span><span>◦</span><span>PACMAN</span><span>◦</span><span>AUR-COMPATIBLE</span><span>◦</span>
+        <span>ROLLING RELEASE</span><span>◦</span>
+      </div>
+    </div>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="section" id="features">
+      <div class="section-head">
+        <span class="section-no">01</span>
+        <h2>Everything tuned to one palette</h2>
+        <p>Five ideas, executed all the way down the boot chain.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="card reveal">
+          <div class="card-tag">DESKTOP</div>
+          <h3>Quiet Ferric desktop</h3>
+          <p>Hyprland + waybar + kitty + fuzzel + mako, tuned to oxide
+             <code>#D85A30</code> on near-black <code>#0C0B0A</code>.
+             1px seams. No blur. No glow.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-tag">BOOT</div>
+          <h3>Continuous boot chain</h3>
+          <p>Syslinux menu, Plymouth tape-spool splash, tuigreet, and the desktop
+             all share the same instrument-panel look. No jarring handoffs from
+             power button to prompt.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-tag">INSTALL</div>
+          <h3>Two installers</h3>
+          <p><code>ferric-install</code> — preseeded archinstall in the terminal.
+             Or <em>Install FerricOS</em> — Calamares, graphical, with
+             ext4 / btrfs / LUKS options.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-tag">BASE</div>
+          <h3>Real Arch underneath</h3>
+          <p>pacman, AUR-compatible, rolling release. The distro identity travels
+             in a handful of <code>ferric-*</code> packages from this repo's own
+             pacman repo — nothing forked, nothing frozen.</p>
+        </article>
+        <article class="card reveal card-wide">
+          <div class="card-tag">BUILD</div>
+          <h3>Everything reproducible</h3>
+          <p>One repository is the entire distro: the archiso recipe, every
+             <code>ferric-*</code> package source, and the CI that builds it.
+             Rebuild the ISO and every package yourself, locally or in CI.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ BOOT CHAIN ============ -->
+    <section class="section" id="boot">
+      <div class="section-head">
+        <span class="section-no">02</span>
+        <h2>One look, power button to prompt</h2>
+        <p>Every stage of the boot chain wears the same instrument-panel face.</p>
+      </div>
+      <ol class="chain reveal">
+        <li class="chain-stage">
+          <span class="chain-no">00</span>
+          <span class="chain-glyph">⏻</span>
+          <h3>Power</h3>
+          <p>BIOS or UEFI, Secure Boot off.</p>
+        </li>
+        <li class="chain-stage">
+          <span class="chain-no">01</span>
+          <span class="chain-glyph">▤</span>
+          <h3>Syslinux</h3>
+          <p>Oxide-on-black boot menu.</p>
+        </li>
+        <li class="chain-stage">
+          <span class="chain-no">02</span>
+          <span class="chain-glyph">◎</span>
+          <h3>Plymouth</h3>
+          <p>Tape-spool splash while the kernel spins up.</p>
+        </li>
+        <li class="chain-stage">
+          <span class="chain-no">03</span>
+          <span class="chain-glyph">▟</span>
+          <h3>tuigreet</h3>
+          <p>A terminal greeter, not a login "experience".</p>
+        </li>
+        <li class="chain-stage chain-last">
+          <span class="chain-no">04</span>
+          <span class="chain-glyph">❖</span>
+          <h3>Hyprland</h3>
+          <p>The quiet desktop. Same palette it booted with.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ DESKTOP / TERMINAL DEMO ============ -->
+    <section class="section" id="desktop">
+      <div class="section-head">
+        <span class="section-no">03</span>
+        <h2>A quiet terminal</h2>
+        <p>The live session logs straight into Hyprland. This is what it feels like.</p>
+      </div>
+      <div class="term reveal">
+        <div class="term-bar">
+          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+          <span class="term-title">ferric@ferricos — kitty</span>
+        </div>
+        <pre class="term-body" id="termBody"><span class="t-prompt">ferric@ferricos ~ %</span> </pre>
+        <button class="term-replay" id="termReplay" title="Replay">↻ replay</button>
+      </div>
+      <div class="palette reveal">
+        <div class="swatch" data-hex="#D85A30"><i style="background:#D85A30"></i>oxide</div>
+        <div class="swatch" data-hex="#C14A3A"><i style="background:#C14A3A"></i>rust</div>
+        <div class="swatch" data-hex="#D8AE5B"><i style="background:#D8AE5B"></i>sodium</div>
+        <div class="swatch" data-hex="#C9BFB2"><i style="background:#C9BFB2"></i>bone</div>
+        <div class="swatch" data-hex="#544C44"><i style="background:#544C44"></i>sediment</div>
+        <div class="swatch" data-hex="#2E2A26"><i style="background:#2E2A26"></i>substrate</div>
+        <div class="swatch" data-hex="#0C0B0A"><i style="background:#0C0B0A"></i>near-black</div>
+      </div>
+      <p class="palette-hint">click a swatch to copy its hex</p>
+
+      <!-- keybindings -->
+      <div class="keys reveal">
+        <div class="keys-head">
+          <h3>Out-of-the-box keybindings</h3>
+          <p>Straight from the <code>ferric-skel</code> Hyprland config. <kbd>❖</kbd> is SUPER.</p>
+        </div>
+        <div class="keys-grid">
+          <div class="keys-col">
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Return</kbd></span><em>kitty terminal</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Space</kbd></span><em>fuzzel launcher</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Q</kbd></span><em>close window</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>F</kbd></span><em>fullscreen</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>V</kbd></span><em>toggle floating</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>L</kbd></span><em>lock (hyprlock)</em></div>
+          </div>
+          <div class="keys-col">
+            <div class="key-row"><span><kbd>❖</kbd><kbd>←↑↓→</kbd></span><em>move focus</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Shift</kbd><kbd>←↑↓→</kbd></span><em>move window</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Ctrl</kbd><kbd>←↑↓→</kbd></span><em>resize window</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>1–9</kbd></span><em>switch workspace</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Shift</kbd><kbd>1–9</kbd></span><em>send to workspace</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Shift</kbd><kbd>M</kbd></span><em>exit Hyprland</em></div>
+          </div>
+          <div class="keys-col">
+            <div class="key-row"><span><kbd>Print</kbd></span><em>screenshot → clipboard</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Print</kbd></span><em>region screenshot</em></div>
+            <div class="key-row"><span><kbd>❖</kbd><kbd>Shift</kbd><kbd>W</kbd></span><em>cycle wallpaper</em></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WALLPAPERS ============ -->
+    <section class="section" id="wallpapers">
+      <div class="section-head">
+        <span class="section-no">04</span>
+        <h2>The oxide set</h2>
+        <p>Ships in <code>ferric-artwork</code> → <code>/usr/share/backgrounds/ferric/</code>.
+           Cycle them live with <kbd>❖</kbd><kbd>Shift</kbd><kbd>W</kbd>.</p>
+      </div>
+      <div class="wall-grid">
+        <figure class="wall reveal">
+          <img src="assets/wallpapers/oxide.jpg" alt="oxide — the FerricOS wordmark over a warm sodium-lit gradient" loading="lazy" width="1200" height="675">
+          <figcaption>oxide <span>· default</span></figcaption>
+        </figure>
+        <figure class="wall reveal">
+          <img src="assets/wallpapers/oxide-sun.png" alt="oxide-sun — a striped oxide sun setting over a dark horizon" loading="lazy" width="1600" height="900">
+          <figcaption>oxide-sun</figcaption>
+        </figure>
+        <figure class="wall reveal">
+          <img src="assets/wallpapers/oxide-grid.png" alt="oxide-grid — a faint 1px grid on near-black" loading="lazy" width="1600" height="900">
+          <figcaption>oxide-grid</figcaption>
+        </figure>
+        <figure class="wall reveal">
+          <img src="assets/wallpapers/oxide-deep.png" alt="oxide-deep — a near-black horizon with a single ember" loading="lazy" width="1600" height="900">
+          <figcaption>oxide-deep</figcaption>
+        </figure>
+      </div>
+      <p class="palette-hint">click a wallpaper to view it full-screen · full-resolution 4K originals ship with the OS</p>
+    </section>
+
+    <!-- ============ INSTALL ============ -->
+    <section class="section" id="install">
+      <div class="section-head">
+        <span class="section-no">05</span>
+        <h2>Get it on metal</h2>
+        <p>Five steps from download to desktop.</p>
+      </div>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step-no">1</span>
+          <div>
+            <h3>Download &amp; verify</h3>
+            <p>Grab the latest ISO from
+               <a href="https://github.com/notChewy1324/ferricos/releases" target="_blank" rel="noopener">Releases</a>
+               and check it against <code>SHA256SUMS</code>.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <span class="step-no">2</span>
+          <div>
+            <h3>Write it to a USB stick</h3>
+            <div class="cmd" data-cmd="sudo dd if=ferricos-*.iso of=/dev/sdX bs=4M status=progress oflag=sync">
+              <code>sudo dd if=ferricos-*.iso of=/dev/sdX bs=4M status=progress oflag=sync</code>
+              <button class="cmd-copy" aria-label="Copy command">copy</button>
+            </div>
+            <p class="step-note">…or just drop the ISO onto a <a href="https://www.ventoy.net" target="_blank" rel="noopener">Ventoy</a> stick.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <span class="step-no">3</span>
+          <div>
+            <h3>Disable Secure Boot</h3>
+            <p>Not yet supported. Flip it off in firmware settings.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <span class="step-no">4</span>
+          <div>
+            <h3>Boot the stick</h3>
+            <p>BIOS or UEFI. The live session logs straight into Hyprland as the
+               <code>ferric</code> user.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <span class="step-no">5</span>
+          <div>
+            <h3>Install</h3>
+            <p><strong>Install FerricOS</strong> (app launcher → Calamares), or run
+               <code>ferric-install</code> in a terminal for preseeded archinstall.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="build-strip reveal">
+        <h3>Prefer to build it yourself?</h3>
+        <p>On an up-to-date Arch system with <code>archiso</code>, <code>base-devel</code>, <code>qemu-full</code>, and <code>edk2-ovmf</code>:</p>
+        <div class="cmd" data-cmd="./scripts/build-packages-local.sh && ./scripts/build-iso.sh">
+          <code>./scripts/build-packages-local.sh &amp;&amp; ./scripts/build-iso.sh</code>
+          <button class="cmd-copy" aria-label="Copy command">copy</button>
+        </div>
+        <p class="step-note">The recipe is evergreen — the ISO is a snapshot. Test in QEMU with <code>./scripts/test-bios.sh</code> or <code>./scripts/test-uefi.sh</code>.</p>
+      </div>
+    </section>
+
+    <!-- ============ PACKAGES ============ -->
+    <section class="section" id="packages">
+      <div class="section-head">
+        <span class="section-no">06</span>
+        <h2>The identity travels in packages</h2>
+        <p>Installed systems track Arch directly. FerricOS ships from its own <code>[ferric]</code> pacman repo.</p>
+      </div>
+      <div class="pkg-table reveal">
+        <div class="pkg-row pkg-head"><span>package</span><span>what it carries</span></div>
+        <div class="pkg-row"><span>ferric-base</span><span>core identity, os-release, defaults</span></div>
+        <div class="pkg-row"><span>ferric-skel</span><span>Hyprland / waybar / kitty / fuzzel / mako configs</span></div>
+        <div class="pkg-row"><span>ferric-artwork</span><span>oxide wallpapers &amp; branding</span></div>
+        <div class="pkg-row"><span>ferric-plymouth</span><span>tape-spool boot splash</span></div>
+        <div class="pkg-row"><span>ferric-grub-theme</span><span>instrument-panel boot menu</span></div>
+        <div class="pkg-row"><span>ferric-calamares-config</span><span>graphical installer flow</span></div>
+        <div class="pkg-row"><span>ferric-tools</span><span>ferric-install &amp; helpers</span></div>
+        <div class="pkg-row"><span>ferric-keyring</span><span>package signing keys</span></div>
+      </div>
+      <div class="flow reveal">
+        <div class="flow-item"><strong>Installed systems</strong><span>track Arch's official repos via <code>pacman -Syu</code></span></div>
+        <span class="flow-arrow">—</span>
+        <div class="flow-item"><strong>ferric-* packages</strong><span>republished by CI on every push to <code>pkgbuilds/**</code></span></div>
+        <span class="flow-arrow">—</span>
+        <div class="flow-item"><strong>ISOs</strong><span>rebuilt monthly — only a delivery vehicle for new installs</span></div>
+      </div>
+
+      <!-- rules of the house -->
+      <div class="rules reveal">
+        <h3>Rules of the house</h3>
+        <p>The architecture is opinionated so the desktop can be quiet.</p>
+        <ul>
+          <li><strong>The live overlay is live-only.</strong> Nothing in the ISO's <code>airootfs</code> ever reaches an installed system.</li>
+          <li><strong>Everything an install receives travels as a package.</strong> Rice in <code>ferric-skel</code>, artwork in <code>ferric-artwork</code>, identity in <code>ferric-base</code>.</li>
+          <li><strong>One file, one home.</strong> When a file graduates into a package, it moves — it never lives in two places.</li>
+          <li><strong>Never fight Arch.</strong> No forked core packages, no held-back kernels, no shipping over <code>filesystem</code>'s files.</li>
+          <li><strong>The distro definition excludes hardware.</strong> NVIDIA, microcode, and personal apps stay out of <code>ferric-base</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq">
+      <div class="section-head">
+        <span class="section-no">07</span>
+        <h2>Fine print</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Is this a fork of Arch?</summary>
+          <p>No. It's Arch, delivered. Installed systems update straight from Arch's
+             official mirrors — kernel, desktop, everything. The FerricOS identity
+             lives in a handful of extra packages.</p>
+        </details>
+        <details>
+          <summary>Do I ever need to reinstall?</summary>
+          <p>No. ISOs are only a delivery vehicle for new installs. Existing systems
+             roll forward forever with <code>pacman -Syu</code>.</p>
+        </details>
+        <details>
+          <summary>How do updates work?</summary>
+          <p><code>pacman -Syu</code> pulls Arch's official repos plus the
+             <code>[ferric]</code> repo. FerricOS packages are republished by CI
+             whenever their sources change; ISOs are rebuilt monthly.</p>
+        </details>
+        <details>
+          <summary>Can I use the AUR?</summary>
+          <p>Yes — it's real Arch underneath. Any AUR helper works exactly as it
+             would on vanilla Arch.</p>
+        </details>
+        <details>
+          <summary>Secure Boot?</summary>
+          <p>Not yet supported — disable it before booting the stick.</p>
+        </details>
+        <details>
+          <summary>Can I fork it?</summary>
+          <p>Yes — it's GPL-3.0-or-later. But forks must rename: "FerricOS", the
+             wordmark, and the artwork identify this project. Derivative distros
+             should ship their own name and branding.</p>
+        </details>
+        <details>
+          <summary>Who makes this?</summary>
+          <p>FerricOS is designed &amp; built by Cam Garrison — all the code is his.
+             It's an independent personal project, not affiliated with or endorsed
+             by Arch Linux. Built on
+             <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a> and
+             <a href="https://gitlab.archlinux.org/archlinux/archiso" target="_blank" rel="noopener">archiso</a>;
+             installer flow modeled on <a href="https://endeavouros.com" target="_blank" rel="noopener">EndeavourOS</a>.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta">
+      <div class="cta-inner reveal">
+        <h2>Press <span class="accent">play</span>.</h2>
+        <p>Boot the tape. Keep the terminal quiet.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/notChewy1324/ferricos/releases" target="_blank" rel="noopener">⭳ Download ISO</a>
+          <a class="btn btn-ghost" href="https://github.com/notChewy1324/ferricos" target="_blank" rel="noopener">Star on GitHub ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>FerricOS — designed &amp; built by Cam Garrison</span>
+      <span>GPL-3.0-or-later · <code>profile/</code> derived from archiso releng</span>
+      <span>Fe₂O₃ · <span id="year"></span></span>
+    </div>
+  </footer>
+
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Wallpaper preview" hidden>
+    <img id="lightboxImg" src="" alt="">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close preview">✕ close</button>
+  </div>
+
+  <button class="back-top" id="backTop" aria-label="Back to top" hidden>↑ top</button>
+  <div class="toast" id="toast" role="status" aria-live="polite">copied</div>
+  <script src="js/main.js"></script>
+</body>
+</html>

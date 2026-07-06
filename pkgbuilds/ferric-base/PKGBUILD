@@ -1,0 +1,80 @@
+# Maintainer: Cam Garrison <notChewy1324>
+# Metapackage that defines "a FerricOS system": identity + the desktop
+# stack as depends. Installed machines get stack changes when depends=()
+# changes and pkgver bumps.
+#
+# Scope rules: NO hardware bits (nvidia*, mesa, ucode)
+# and NO personal apps (steam) — those belong to packages.x86_64 or the
+# installer's hardware layer, not the distro definition.
+#
+# Identity: never ship /etc/os-release or
+# /usr/lib/os-release directly — that conflicts with Arch's `filesystem`
+# package. We ship /usr/share/ferric/os-release plus a libalpm
+# PostTransaction hook that copies it over /etc/os-release, re-firing on
+# every filesystem upgrade so Arch can never silently reclaim identity.
+
+pkgname=ferric-base
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="FerricOS base metapackage — identity and the full FerricOS desktop stack"
+arch=('any')
+url="https://github.com/notChewy1324/ferricos"
+license=('GPL-3.0-or-later')
+depends=(
+  # ferric identity + rice
+  'ferric-artwork'
+  'ferric-skel'
+  'ferric-tools'
+  # compositor + shell
+  'hyprland'
+  'hyprpaper'
+  'hyprlock'
+  'hypridle'
+  'waybar'
+  'mako'
+  'fuzzel'
+  'kitty'
+  # login
+  'greetd'
+  'greetd-tuigreet'
+  # network
+  'networkmanager'
+  # audio
+  'pipewire'
+  'pipewire-alsa'
+  'pipewire-pulse'
+  'wireplumber'
+  'pamixer'
+  # desktop plumbing
+  'brightnessctl'
+  'polkit-gnome'
+  'qt5-wayland'
+  'qt6-wayland'
+  'xdg-desktop-portal-gtk'
+  'xdg-desktop-portal-hyprland'
+  'xdg-utils'
+  # screenshots + clipboard
+  'grim'
+  'slurp'
+  'wl-clipboard'
+  # fonts
+  'noto-fonts'
+  'ttf-jetbrains-mono-nerd'
+  # terminal life
+  'zsh'
+  'zsh-autosuggestions'
+  'fastfetch'
+  'btop'
+)
+source=('os-release'
+        'ferric-os-release.hook'
+        'greetd.toml')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+package() {
+  install -Dm644 "$srcdir/os-release" "$pkgdir/usr/share/ferric/os-release"
+  install -Dm644 "$srcdir/ferric-os-release.hook" \
+    "$pkgdir/usr/share/libalpm/hooks/ferric-os-release.hook"
+  # installers copy this over greetd's stock config on the target
+  install -Dm644 "$srcdir/greetd.toml" "$pkgdir/usr/share/ferric/greetd.toml"
+}
