@@ -7,3 +7,4 @@ back as notChewy1324, so every CI run is trackable in git history.
 |---|---|---|---|---|
 | 2026-07-06T01:24Z | Build FerricOS packages | #6 | success | [run](https://github.com/notChewy1324/FerricOS/actions/runs/28761758063) |
 | 2026-07-07T01:14Z | Build FerricOS packages | #7 | success | [run](https://github.com/notChewy1324/FerricOS/actions/runs/28834254787) |
+| 2026-07-08T14:16Z | Build FerricOS ISO | #5 | success | [run](https://github.com/notChewy1324/FerricOS/actions/runs/28948775125) |
